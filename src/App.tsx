@@ -1,6 +1,8 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import ToDoList from "./ToDoList";
+import { darkTheme } from './theme';
+import { ThemeProvider } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap')
@@ -69,8 +71,10 @@ a {
 function App() {
   return (
     <div>
+    <ThemeProvider theme={darkTheme}>
      <GlobalStyle />
      <ToDoList />
+     </ThemeProvider>
     </div>
   );
 }
