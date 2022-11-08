@@ -45,23 +45,51 @@ lastname: string,
 password:  string;
 passwordConfirm:  string;
 username:  string;
+extraError?:string;
 }
 
 function ToDoList(){
-    const {register, watch, handleSubmit, formState:{errors}} = useForm<IForm>({defaultValues:{email:"@naver.com"}});
-   console.log(register("email"));
+    const {register, watch, handleSubmit, formState:{errors}, setError, setValue} = useForm<IForm>({defaultValues:{email:"@naver.com"}});
+  // console.log(register("email"));
  // console.log(watch())
-const onValid = (data:any) =>{
-  console.log(data);
+const onValid = (data:IForm) =>{ // form의 data가 유효할때만 호출되는 함수
+  //console.log(data);
+  if(data.password !== data.passwordConfirm){
+    setError("passwordConfirm", // passwordConfirm이 에러가 있을때 호출
+    {message:"Password are not the same"}, 
+    {shouldFocus:true}
+    )
+  }
+  //  setError("extraError", {message: "Server Offline"}) // 전체 form에 해당되는 에러
+  setValue("email","");
+  setValue("firstname","");
+  setValue("lastname","");
+  setValue("username","");
+  setValue("password","");
+  setValue("passwordConfirm","");
 }
 console.log(errors);
+
     return (
 <div>
+<span>{errors?.extraError?.message}</span>
 <form
 style={{display: "flex", flexDirection: "column"}} onSubmit={ handleSubmit(onValid)}>
 <input {...register("email", {required:"Email is required", pattern: {value:/^[A-Za-z0-9.@_%=-]+naver.com$/, message:"Only naver.com allowed"}})} placeholder="Email" />
+{/*  register("name") --> name은 <form>의 handleSubmit의 data로 들어간다
+*/}
 <span>{errors?.email?.message}</span>
-<input {...register("firstname", {required:"write here"})} placeholder="firstname"/>
+
+<input 
+{...register("firstname", 
+{required:"write here",
+validate: {
+noJS: (value) => value.includes("JS") ? "no JS allowed" : true,
+noReact: (value) => value.includes("React") ? "no Reacts allowed" : true,
+}})} 
+placeholder="firstname"/>
+
+{/* 만약 react-hook-form에서 문자열을 리턴한다면 에러메세지를 리턴한다는 뜻  */}
 <span>{errors?.firstname?.message}</span>
 <input {...register("lastname", {required:"write here"})} placeholder="lastname"/>
 <span>{errors?.lastname?.message}</span>
