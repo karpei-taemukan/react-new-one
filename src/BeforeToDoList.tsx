@@ -48,7 +48,7 @@ username:  string;
 extraError?:string;
 }
 
-function ToDoList(){
+function BeforeToDoList(){
     const {register, watch, handleSubmit, formState:{errors}, setError, setValue} = useForm<IForm>({defaultValues:{email:"@naver.com"}});
   // console.log(register("email"));
  // console.log(watch())
@@ -107,4 +107,4 @@ placeholder="firstname"/>
 )
 };
 
-export default ToDoList;
+export default BeforeToDoList;
