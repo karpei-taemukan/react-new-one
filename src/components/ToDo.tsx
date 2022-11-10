@@ -8,8 +8,19 @@ function ToDo({text, category, id}:IToDo){
     const setToDos = useSetRecoilState(toDostate);
 
     const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
-       const {currentTarget:{name}} = event;
+      const {currentTarget:{name}} = event;
       // console.log(name)
+      // consolee.log(oldToDos);
+      setToDos(oldToDos => {
+      const targetIndex = oldToDos.findIndex((todo) => todo.id === id);
+      //console.log(targetIndex);
+      //console.log(id)
+      const oldToDo = oldToDos[targetIndex];
+      const newToDo = {text, id, category: name as any};
+      {/*category는 "TO_DO" | "DOING" | "DONE" 중에 하나여야하는데 name이라 에러 뜬다*/}
+      //console.log(oldToDo);
+      //console.log(newToDo);
+      return [...oldToDos.slice(0,targetIndex), newToDo, ...oldToDos.slice(targetIndex+1)]});
     }
     return (
     <>
@@ -24,8 +35,8 @@ function ToDo({text, category, id}:IToDo){
     {category !== "DONE" && <button onClick={()=>onClick("DONE")}>Done</button>}
 */}
 {category !== "DOING" && <button name="DOING" onClick={onClick}>Doing</button>}
-    {category !== "TO_DO" && <button name="TO_DO" onClick={onClick}>To Do</button>}
-    {category !== "DONE" && <button name="DONE" onClick={onClick}>Done</button>}
+{category !== "TO_DO" && <button name="TO_DO" onClick={onClick}>To Do</button>}
+{category !== "DONE" && <button name="DONE" onClick={onClick}>Done</button>}
     </li>
     </>)
 }
