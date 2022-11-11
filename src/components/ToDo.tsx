@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { IToDo, toDostate } from "../atom";
+import { IToDo, toDostate, Categories } from "../atom";
 
 function ToDo({text, category, id}:IToDo){
     {/*const onClick = (newCategory:IToDo["category"]) => {
@@ -34,9 +34,9 @@ function ToDo({text, category, id}:IToDo){
     {category !== "TO_DO" && <button onClick={()=>onClick("TO_DO")}>To Do</button>}
     {category !== "DONE" && <button onClick={()=>onClick("DONE")}>Done</button>}
 */}
-{category !== "DOING" && <button name="DOING" onClick={onClick}>Doing</button>}
-{category !== "TO_DO" && <button name="TO_DO" onClick={onClick}>To Do</button>}
-{category !== "DONE" && <button name="DONE" onClick={onClick}>Done</button>}
+{category !== Categories.DOING && <button /*name={Categories.DOING + ""} string 변환*/name={Categories.DOING} onClick={onClick}>Doing</button>}
+{category !== Categories.TO_DO && <button /*name={Categories.TO_DO + ""}*/ name={Categories.TO_DO} onClick={onClick}>To Do</button>}
+{category !== Categories.DONE && <button /*name={Categories.DONE + ""} */ name={Categories.DONE} onClick={onClick}>Done</button>}
     </li>
     </>)
 }

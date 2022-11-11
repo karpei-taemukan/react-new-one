@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue} from "recoil";
-import { toDostate, categoryState } from "../atom";
+import { toDostate, categoryState, Categories } from "../atom";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 import { toDoSelector } from "../atom";
@@ -7,7 +7,7 @@ import { toDoSelector } from "../atom";
 
 function ToDoList(){
     // const toDos = useRecoilValue(toDostate);
-    // useRecoilValue: atom으로부터 값 불러오기
+    // useRecoilValue: atom이나 selector의 값만 반환
 
     // const setToDos = useRecoilState(toDostate);
     // useSetRecoilState: atom의 값 바꾸기
@@ -21,19 +21,20 @@ const [category, setCategory] = useRecoilState(categoryState);
 
 const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
 //console.log(event.currentTarget.value);
-setCategory(event.currentTarget.value);
+setCategory(event.currentTarget.value as any);
 }
 //console.log(category);
-    return (
+console.log(toDos) 
+return (
     <div>
     {category === "TO_DO" ? <h1>TO_DO</h1>:null}
-    {category === "DOING" ? <h1>DOING</h1>:null}
-    {category === "DONE" ? <h1>DONE</h1> :null}
+    {category==="DOING" ? <h1>DOING</h1>:null}
+    {category==="DONE" ? <h1>DONE</h1> :null}
     <hr />
     <select value={category} onInput={onInput}>
-    <option value={"TO_DO"}>To Do</option>
-    <option value={"DOING"}>Doing</option>
-    <option value={"DONE"}>Done</option>
+    <option value={Categories.TO_DO}>To Do</option>
+    <option value={Categories.DOING}>Doing</option>
+    <option value={Categories.DONE}>Done</option>
     </select>
     <CreateToDo />
 
@@ -67,7 +68,7 @@ setCategory(event.currentTarget.value);
 
 {/*{toDos.map((toDo) => <ToDo text={toDo.text} category={toDo.category} id={toDo.id}/>)}*/}
 {/*  {done.map((toDo) => <ToDo key={toDo.id} {...toDo}/>)} */}
-{/* toDos배열의 toDo원소 하나하나가 <ToDo>에 필요한 props와 같은 모양이기 때문 */}
+
 {/*  </ul>
 */}  
     </div>)
