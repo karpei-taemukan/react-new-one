@@ -1,12 +1,16 @@
-import { useSetRecoilState } from "recoil";
-import { IToDo, toDostate, Categories } from "../atom";
+import React from "react";
+import { useSetRecoilState,useRecoilValue } from "recoil";
+import { IToDo, toDostate, Categories, toDoSelector } from "../atom";
 
 function ToDo({text, category, id}:IToDo){
     {/*const onClick = (newCategory:IToDo["category"]) => {
     console.log(newCategory)}
 */}
     const setToDos = useSetRecoilState(toDostate);
+    const toDos = useRecoilValue(toDoSelector);
 
+
+    
     const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
       const {currentTarget:{name}} = event;
       // console.log(name)
@@ -22,6 +26,16 @@ function ToDo({text, category, id}:IToDo){
       //console.log(newToDo);
       return [...oldToDos.slice(0,targetIndex), newToDo, ...oldToDos.slice(targetIndex+1)]});
     }
+
+    const onDelete = (event:React.MouseEvent<HTMLButtonElement>)=>{
+      const {currentTarget:{value}} = event;
+      setToDos(oldToDos => {
+        const targetIndex = oldToDos.findIndex((todo) => todo.id === id);
+        console.log(targetIndex)
+        return oldToDos.filter((todo) => todo.id !== id)
+      })
+     }
+   
     return (
     <>
     <li>
@@ -34,9 +48,17 @@ function ToDo({text, category, id}:IToDo){
     {category !== "TO_DO" && <button onClick={()=>onClick("TO_DO")}>To Do</button>}
     {category !== "DONE" && <button onClick={()=>onClick("DONE")}>Done</button>}
 */}
-{category !== Categories.DOING && <button /*name={Categories.DOING + ""} string 변환*/name={Categories.DOING} onClick={onClick}>Doing</button>}
-{category !== Categories.TO_DO && <button /*name={Categories.TO_DO + ""}*/ name={Categories.TO_DO} onClick={onClick}>To Do</button>}
-{category !== Categories.DONE && <button /*name={Categories.DONE + ""} */ name={Categories.DONE} onClick={onClick}>Done</button>}
+{category !== Categories.DOING 
+&& <button /*name={Categories.DOING + ""} string 변환*/name={Categories.DOING} onClick={onClick}>Doing</button>
+}
+<button onClick={onDelete}>Delete</button>
+{category !== Categories.TO_DO 
+&& <button /*name={Categories.TO_DO + ""}*/ name={Categories.TO_DO} onClick={onClick}>To Do</button>
+}
+
+{category !== Categories.DONE 
+&& <button /*name={Categories.DONE + ""} */ name={Categories.DONE} onClick={onClick}>Done</button>
+}
     </li>
     </>)
 }
