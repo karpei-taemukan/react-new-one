@@ -9,7 +9,7 @@ function ToDo({text, category, id}:IToDo){
     const setToDos = useSetRecoilState(toDostate);
     const toDos = useRecoilValue(toDoSelector);
 
-
+console.log(id)
     
     const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
       const {currentTarget:{name}} = event;
@@ -27,14 +27,27 @@ function ToDo({text, category, id}:IToDo){
       return [...oldToDos.slice(0,targetIndex), newToDo, ...oldToDos.slice(targetIndex+1)]});
     }
 
-    const onDelete = (event:React.MouseEvent<HTMLButtonElement>)=>{
+    const onDelete1 = (event:React.MouseEvent<HTMLButtonElement>)=>{
       const {currentTarget:{value}} = event;
+  
+      for(let i = 0; i<localStorage.length; i++){
+        // console.log(typeof(localStorage.key(i)));
+       //console.log(typeof(String(id)))
+       if(String(id) === localStorage.key(i)){
+         const key = localStorage.key(i);
+       console.log(typeof(key));
+       return localStorage.removeItem(key as string);
+       }
+       }
+     
       setToDos(oldToDos => {
         const targetIndex = oldToDos.findIndex((todo) => todo.id === id);
         console.log(targetIndex)
         return oldToDos.filter((todo) => todo.id !== id)
       })
      }
+     
+
    
     return (
     <>
@@ -51,7 +64,7 @@ function ToDo({text, category, id}:IToDo){
 {category !== Categories.DOING 
 && <button /*name={Categories.DOING + ""} string 변환*/name={Categories.DOING} onClick={onClick}>Doing</button>
 }
-<button onClick={onDelete}>Delete</button>
+<button onClick={onDelete1}>Delete</button>
 {category !== Categories.TO_DO 
 && <button /*name={Categories.TO_DO + ""}*/ name={Categories.TO_DO} onClick={onClick}>To Do</button>
 }

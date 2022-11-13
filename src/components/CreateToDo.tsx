@@ -4,7 +4,6 @@ import {categoryState, toDostate} from "../atom";
 
 interface IForm{
     toDo:string;
-    
     }
 
 
@@ -13,11 +12,15 @@ const {register,handleSubmit, setValue} = useForm<IForm>();
 const setToDos = useSetRecoilState(toDostate)
 
 const category = useRecoilValue(categoryState);
+
 const handleValid = ({toDo}:IForm) => {
-        // console.log(data,data.toDo)
+        //console.log(data,data.toDo)
+        console.log(toDo)
          setValue("toDo", "");
          setToDos((oldToDos) => [...oldToDos,{text:toDo, category, id: Date.now()}]);
-     }
+         const random = Date.now();
+         localStorage.setItem(random+"",toDo);
+        }
 
     return (
     <div>
