@@ -48,3 +48,21 @@ export const toDoSelector = selector({
 ];*/}
     } 
 })
+
+export const minutesState = atom({
+    key:"minute",
+    default: 0,
+})
+
+export const hoursSelector = selector({
+    key:"hours",
+    get: ({get}) => { // selector의 값을 주는 것이다
+       const minutes = get(minutesState);
+       return minutes / 60;
+    },
+    set:({set},newValue) => { // state를 수정할 수 있게한다 
+       // console.log(newValue);
+    const minutes = Number(newValue) * 60;
+    set(minutesState,minutes);
+    }
+})

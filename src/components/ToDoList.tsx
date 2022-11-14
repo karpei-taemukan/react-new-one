@@ -1,8 +1,9 @@
 import { useRecoilState, useRecoilValue} from "recoil";
-import { toDostate, categoryState, Categories } from "../atom";
+import { toDostate, categoryState, Categories, minutesState, hoursSelector } from "../atom";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 import { toDoSelector } from "../atom";
+import React from "react";
 
 
 function ToDoList(){
@@ -24,7 +25,27 @@ const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
 setCategory(event.currentTarget.value as any);
 }
 //console.log(category);
-console.log(toDos) 
+//console.log(toDos);
+
+const [minutes, setMinutes] = useRecoilState(minutesState);
+//const hours = useRecoilValue(hoursSelector);
+//console.log(hours);
+const [hours, setHours] = useRecoilState(hoursSelector);
+
+// useRecoilState를 쓸때 []의 첫번째 item은 atom의 값이거나
+// selector의 get함수의 값이다
+// 두번째 item은 atom을 수정하는 함수이거나 
+// selector의 set property를 실행시키는 함수이다
+
+const onMinutesChange = (event:React.FormEvent<HTMLInputElement>) => {
+setMinutes(+event.currentTarget.value);
+// 앞의 +는 string을 number로 바꾼다
+}
+
+const onHoursChange = (event:React.FormEvent<HTMLInputElement>) => {
+  setHours(+event.currentTarget.value);
+}
+
 return (
     <div>
     {category === "TO_DO" ? <h1>TO_DO</h1>:null}
@@ -71,6 +92,9 @@ return (
 
 {/*  </ul>
 */}  
+
+<input onChange={onMinutesChange} value={minutes} type="number" placeholder="Minutes" />
+<input onChange={onHoursChange} value={hours} type="number" placeholder="Hours" />
     </div>)
 }
 
