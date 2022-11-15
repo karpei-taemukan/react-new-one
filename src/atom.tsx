@@ -66,3 +66,8 @@ export const hoursSelector = selector({
     set(minutesState,minutes);
     }
 })
+
+export const UpgradeToDoState = atom({
+    key:"UpgradeToDo",
+    default: ["a", "b", "c", "d", "e", "f"],
+});

@@ -1,5 +1,7 @@
-import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { UpgradeToDoState } from "../atom";
 
 
 const Board = styled.div`
@@ -33,21 +35,50 @@ width: 100%;
 grid-template-columns: repeat(1, 1fr);
 `;
 
-const toDos = ["a", "b", "c", "d", "e", "f"];
 
 function UpgradeToDo(){
-    const onDragEnd = () => {};
+    const [toDos, setToDos] = useRecoilState(UpgradeToDoState);
+
+    const onDragEnd = ({draggableId,destination,source}:DropResult) => {
+        if(!destination?.index){
+            return;
+        }
+        setToDos(oldToDos => {
+    const toDosCopy = [...oldToDos];  // state를 mutate하지 않을 것이다
+
+    // 1) source.index 삭제
+
+    console.log("Delete item on",source.index);
+    console.log(toDosCopy);
+
+    toDosCopy.splice(source.index,1);
+
+    console.log("Deleted item")
+    console.log(toDosCopy);
+
+    // 2) destination.index에 draggableId 놓기
+    console.log("Put back", destination?.index, "on ",draggableId)
+
+    toDosCopy.splice(destination?.index,0,draggableId)
+
+    console.log(toDos);
+            return toDosCopy;
+        })
+    };
+
     return <DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
             <Boards>
            <Droppable droppableId="one">
             {(magic)=> (<Board ref={magic.innerRef} {...magic.droppableProps}>
-            {toDos.map((toDo,index) => (<Draggable draggableId={toDo} index={index}>
-                {(provided)=>
+            {toDos.map((toDo,index) => 
+            (<Draggable key={toDo} draggableId={toDo} index={index}>
+            {/* key와 draggableId가 무조건 같아야 한다 */}
+                {(magic)=>
                 (<Card 
-                ref={provided.innerRef}  
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}>
+                ref={magic.innerRef}  
+                {...magic.draggableProps}
+                {...magic.dragHandleProps}>
                 {toDo}
                 </Card>)}
             </Draggable>))} 
