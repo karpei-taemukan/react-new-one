@@ -4,6 +4,7 @@ import ToDoList from "./components/ToDoList";
 import { darkTheme } from './theme';
 import { ThemeProvider } from "styled-components";
 import { RecoilRoot } from "recoil";
+import Router from "./Router";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap')
@@ -61,7 +62,7 @@ body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
   background-color:${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.textColor};
+  color:"black";
   line-height: 1.2;
 }
 a {
@@ -75,7 +76,8 @@ function App() {
     <ThemeProvider theme={darkTheme}>
      <GlobalStyle />
      <RecoilRoot>
-     <ToDoList />
+      <Router />
+      {/*    <ToDoList />는 없어도 됨 <Router/>가 다 제공 */}
      </RecoilRoot>
      </ThemeProvider>
     </div>

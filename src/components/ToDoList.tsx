@@ -4,7 +4,7 @@ import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 import { toDoSelector } from "../atom";
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 function ToDoList(){
     // const toDos = useRecoilValue(toDostate);
@@ -51,6 +51,7 @@ return (
     {category === "TO_DO" ? <h1>TO_DO</h1>:null}
     {category==="DOING" ? <h1>DOING</h1>:null}
     {category==="DONE" ? <h1>DONE</h1> :null}
+    <Link to={{pathname: "/UpgradeToDo/"}}>UpgradeToDo</Link>
     <hr />
     <select value={category} onInput={onInput}>
     <option value={Categories.TO_DO}>To Do</option>
