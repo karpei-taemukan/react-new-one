@@ -2,12 +2,13 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-const Card = styled.div`
+const Card = styled.div<{isDragging:boolean}>`
 border-radius: 5px;
 margin-bottom: 5px;
-padding: 10px 10px;
-background-color: ${props => props.theme.cardColor}
-`
+padding: 10px;
+box-shadow: ${(props) => props.isDragging ? "10px 12px 15px rgba(0, 0, 0, 0.5)" : "none"};
+background-color: ${(props) => props.isDragging ? "#e4f2ff" : props.theme.cardColor}
+`;
 
 interface IDragabbleCardProps{
     toDo: string,
@@ -19,8 +20,9 @@ function DragabbleCard({toDo, index}:IDragabbleCardProps){
     return (
         <Draggable key={toDo} draggableId={toDo} index={index}>
             {/* key와 draggableId가 무조건 같아야 한다 */}
-                {(magic)=>
+                {(magic, snapshot)=>
                 (<Card 
+                isDragging={snapshot.isDragging}
                 ref={magic.innerRef}  
                 {...magic.draggableProps}
                 {...magic.dragHandleProps}>
