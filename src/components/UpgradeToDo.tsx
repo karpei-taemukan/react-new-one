@@ -58,7 +58,7 @@ function UpgradeToDo(){
 
 
      const onDragEnd = (info:DropResult)=>{
-        console.log(info);
+        console.log(info); // 카드를 옮길때 발생하는 정보(info)
         const {destination, draggableId, source} = info;
         if(!destination){
             return;
@@ -69,8 +69,10 @@ function UpgradeToDo(){
 
             setToDos((allBoards) => {
                 const boardCopy = [...allBoards[source.droppableId]];
+                const taskObj = boardCopy[source.index];
+                console.log("Array: ",boardCopy, "Object: ", taskObj);
                 boardCopy.splice(source.index,1);
-                boardCopy.splice(destination?.index,0,draggableId)
+                boardCopy.splice(destination?.index,0,taskObj);
 
 // destination?.index 인 이유는 가끔씩 typescript에 따라서 
 // destination은 정의된 위치이거나 undefined일 수 도 있기 때문
@@ -88,9 +90,9 @@ function UpgradeToDo(){
             setToDos((allBoards) => {
                const sourceBoard = [...allBoards[source.droppableId]];
                const destinationBoard = [...allBoards[destination.droppableId]];
-
+               const taskObj = sourceBoard[source.index];
                sourceBoard.splice(source.index,1);
-               destinationBoard.splice(destination?.index,0,draggableId);
+               destinationBoard.splice(destination?.index,0,taskObj);
 
                return {
                 ...allBoards,
@@ -99,7 +101,7 @@ function UpgradeToDo(){
                }
             })
         }
-     }   
+    }   
 
     return (<DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>

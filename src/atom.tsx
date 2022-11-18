@@ -67,15 +67,21 @@ export const hoursSelector = selector({
     }
 })
 
-interface IToDoState {
-    [key:string]:string[];
+export interface ITodo {
+    id:number;
+    text:string;
 }
+
+interface IToDoState {
+    [key:string]:ITodo[];
+}
+
 
 export const UpgradeToDoState = atom<IToDoState>({
     key:"UpgradeToDo",
     default: {
-        to_do : ["a","b"],
-        doing: ["c", "d", "e",],
-        done: ["f"],
+        to_do : [],
+        doing: [],
+        done: [],
     }
 });

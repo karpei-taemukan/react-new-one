@@ -11,14 +11,15 @@ background-color: ${(props) => props.isDragging ? "#e4f2ff" : props.theme.cardCo
 `;
 
 interface IDragabbleCardProps{
-    toDo: string,
+    toDoId: number,
+    toDoText:string,
     index: number
 }
 
-function DragabbleCard({toDo, index}:IDragabbleCardProps){
+function DragabbleCard({toDoId, toDoText, index}:IDragabbleCardProps){
    // console.log(toDo, " has rendered")
     return (
-        <Draggable key={toDo} draggableId={toDo} index={index}>
+        <Draggable draggableId={toDoId+""} index={index}>
             {/* key와 draggableId가 무조건 같아야 한다 */}
                 {(magic, snapshot)=>
                 (<Card 
@@ -26,7 +27,7 @@ function DragabbleCard({toDo, index}:IDragabbleCardProps){
                 ref={magic.innerRef}  
                 {...magic.draggableProps}
                 {...magic.dragHandleProps}>
-                {toDo}
+                {toDoText}
                 </Card>)}
             </Draggable>
     );
