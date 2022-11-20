@@ -14,6 +14,7 @@ border-radius: 5px;
 min-height: 200px;
 display:flex;
 flex-direction: column;
+
 `;
 
 const Title = styled.h1`
@@ -36,11 +37,19 @@ padding: 20px;
 `
 const Form = styled.form`
 width:100%;
-input{
-    width:100%;
-    text-align:center;
-}
+display: flex;
+justify-content: center;
+align-items: center;
 `;
+
+const Input = styled.input`
+border-radius: 15px;
+text-align:center;
+margin: 10px 0px;
+`;
+
+
+
 
 interface IBoardProp{
     toDos: ITodo[],
@@ -70,6 +79,7 @@ const newToDo = {
     text: toDo // toDo는 form에서 작성한 data를 받아옴
 }
 setToDos(allBoards => {
+    localStorage.setItem(newToDo.id+"",newToDo.text);
     return { // form에 입력해서 Board에 작성하는 작업
         ...allBoards,
         [boardId]:[ // boardId: to_do || doing || done
@@ -78,6 +88,9 @@ setToDos(allBoards => {
         ]
     }
 })
+
+
+
 setValue("toDo", "")
 }
     return (
@@ -85,7 +98,10 @@ setValue("toDo", "")
     <Title>{boardId}</Title>
 
     <Form onSubmit={handleSubmit(onValid)}>
-    <input {...register("toDo",{required:true})} type="text" placeholder={`Add task on ${boardId}`} />
+    <Input 
+    {...register("toDo",{required:true})} 
+    type="text" 
+    placeholder={`Add task on ${boardId}`} />
     </Form>
 
     {/*<input ref={inputRef} placeholder="grab me" />
@@ -107,6 +123,9 @@ setValue("toDo", "")
     {magic.placeholder}   {/* <Card/>를 <Draggable/> 의 밖에 드래그할때 <Draggable/>의 크기를 고정시키는 역할*/}
     </Area>)}
     </Droppable>
+  
+  
+      
     </Wrapper>
     )
 }

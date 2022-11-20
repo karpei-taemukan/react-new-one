@@ -1,7 +1,7 @@
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { UpgradeToDoState } from "../atom";
+import { UpgradeToDoState,DeleteToDoState } from "../atom";
 import Board from "./Board";
 import DragabbleCard from "./DragabbleCard";
 
@@ -22,8 +22,14 @@ display: grid;
 width: 100%;
 grid-template-columns: repeat(3, 1fr);
 gap: 10px;
+position: relative;
 `;
 
+const Img = styled.div`
+margin: 0 auto;
+position: absolute;
+top: 80%;
+`;
 
 function UpgradeToDo(){
     const [toDos, setToDos] = useRecoilState(UpgradeToDoState);
@@ -56,7 +62,8 @@ function UpgradeToDo(){
         })*/
 
 
-
+// **** onDragEnd: DeleteToDoState 가져와서 useRecoilState 사용하여 배열을 가져와서 
+// const Delete = [...allBoards[source.droppableId]]; 배열내 원소삭제 
      const onDragEnd = (info:DropResult)=>{
         console.log(info); // 카드를 옮길때 발생하는 정보(info)
         const {destination, draggableId, source} = info;
@@ -103,11 +110,34 @@ function UpgradeToDo(){
         }
     }   
 
+
+
     return (<DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
             <Boards>
         {Object.keys(toDos).map(boardId => (<Board key={boardId} toDos={toDos[boardId]} boardId={boardId}/>))}
             </Boards>
+           
+    <Droppable droppableId="delete">
+    {(provided) => 
+    <Img 
+    ref={provided.innerRef}
+    {...provided.droppableProps}>
+    <Draggable draggableId="first" index={0}>
+    {(magic) => 
+    <img
+    ref={magic.innerRef}
+    {...magic.draggableProps} //--> 드래그 가능하게 해줌 
+    {...magic.dragHandleProps} //--> 중간 아래 위 다 드래그할 수 있게함  
+    style={{width: "100px", height: "100px"}} 
+    src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png"
+    alt="delete" />
+}
+</Draggable>
+</Img>
+    }    
+</Droppable>
+    
         </Wrapper>
     </DragDropContext>)
 }

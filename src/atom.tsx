@@ -1,4 +1,7 @@
 import { atom, readOnlySelector, selector } from "recoil"
+import { recoilPersist } from 'recoil-persist'
+
+const { persistAtom } = recoilPersist()
 
 //type categories = "TO_DO" | "DOING" | "DONE";
 
@@ -19,10 +22,14 @@ export interface IToDo{
     id: number;
     category: Categories
     }
+    //let output = localStorage.getItem("TODOS");
+    //let localData = JSON.parse(output as any);
 
 export const toDostate = atom<IToDo[]>({ // atom의 type이 ToDO의 배열임을 알려줌
     key:"toDo",
-    default:[],
+   // default:localData,
+   default: [],
+    effects_UNSTABLE: [persistAtom]
     })
 
     // atom은 꼭 props를 저장하는 데가 아닌 변경할 data 저장 장소이다 
@@ -83,5 +90,11 @@ export const UpgradeToDoState = atom<IToDoState>({
         to_do : [],
         doing: [],
         done: [],
-    }
+    },
+    effects_UNSTABLE: [persistAtom]
 });
+
+export const DeleteToDoState = atom({
+    key:"DeleteToDoState",
+    default: []
+})

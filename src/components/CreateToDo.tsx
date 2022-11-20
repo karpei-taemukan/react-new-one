@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {useRecoilValue, useSetRecoilState} from "recoil";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 import {categoryState, toDostate} from "../atom";
 
 interface IForm{
@@ -13,13 +15,23 @@ const setToDos = useSetRecoilState(toDostate)
 
 const category = useRecoilValue(categoryState);
 
+/*const random = Date.now();
+useEffect(() => {
+    localStorage.setItem(random+"", JSON.stringify(toDostate));
+    }, [toDostate]);
+*/
+
 const handleValid = ({toDo}:IForm) => {
         //console.log(data,data.toDo)
         console.log(toDo)
-         setValue("toDo", "");
-         setToDos((oldToDos) => [...oldToDos,{text:toDo, category, id: Date.now()}]);
-         const random = Date.now();
-         localStorage.setItem(random+"",toDo);
+        
+
+        setValue("toDo", "");
+        setToDos((oldToDos) => 
+        {
+       return [...oldToDos,{text:toDo, category, id: Date.now()}]
+        });
+
         }
 
     return (

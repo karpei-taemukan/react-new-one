@@ -26,19 +26,9 @@ console.log(id)
       //console.log(newToDo);
       return [...oldToDos.slice(0,targetIndex), newToDo, ...oldToDos.slice(targetIndex+1)]});
     }
-
-    const onDelete1 = (event:React.MouseEvent<HTMLButtonElement>)=>{
-      const {currentTarget:{value}} = event;
   
-      for(let i = 0; i<localStorage.length; i++){
-        // console.log(typeof(localStorage.key(i)));
-       //console.log(typeof(String(id)))
-       if(String(id) === localStorage.key(i)){
-         const key = localStorage.key(i);
-       console.log(typeof(key));
-       return localStorage.removeItem(key as string);
-       }
-       }
+    const onDelete = (event:React.MouseEvent<HTMLButtonElement>)=>{
+      const {currentTarget:{value}} = event;
      
       setToDos(oldToDos => {
         const targetIndex = oldToDos.findIndex((todo) => todo.id === id);
@@ -64,7 +54,7 @@ console.log(id)
 {category !== Categories.DOING 
 && <button /*name={Categories.DOING + ""} string 변환*/name={Categories.DOING} onClick={onClick}>Doing</button>
 }
-<button onClick={onDelete1}>Delete</button>
+<button onClick={onDelete}>Delete</button>
 {category !== Categories.TO_DO 
 && <button /*name={Categories.TO_DO + ""}*/ name={Categories.TO_DO} onClick={onClick}>To Do</button>
 }
