@@ -72,7 +72,7 @@ a {
 
 function App() {
   return (
-    <div>
+    <>
     <ThemeProvider theme={darkTheme}>
      <GlobalStyle />
      <RecoilRoot>
@@ -80,7 +80,7 @@ function App() {
       {/* <ToDoList />는 없어도 됨 <Router/>가 components 다 제공 */}
      </RecoilRoot>
      </ThemeProvider>
-    </div>
+    </>
   );
 }
 

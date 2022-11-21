@@ -94,7 +94,3 @@ export const UpgradeToDoState = atom<IToDoState>({
     effects_UNSTABLE: [persistAtom]
 });
 
-export const DeleteToDoState = atom({
-    key:"DeleteToDoState",
-    default: []
-})

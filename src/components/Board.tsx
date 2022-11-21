@@ -61,7 +61,7 @@ interface IForm{
 }
 
 function Board({toDos, boardId}:IBoardProp){
-
+//console.log(toDos)
     const inputRef = useRef<HTMLInputElement>(null); // typescript에게 무엇을 받아올건지 말해야한다
     const onClick = () => {
         inputRef.current?.focus();
@@ -79,7 +79,7 @@ const newToDo = {
     text: toDo // toDo는 form에서 작성한 data를 받아옴
 }
 setToDos(allBoards => {
-    localStorage.setItem(newToDo.id+"",newToDo.text);
+   // localStorage.setItem(newToDo.id+"",newToDo.text);
     return { // form에 입력해서 Board에 작성하는 작업
         ...allBoards,
         [boardId]:[ // boardId: to_do || doing || done
@@ -119,9 +119,10 @@ setValue("toDo", "")
 
     {toDos.map((toDo,index) => 
     <DragabbleCard key={toDo.id} index={index} toDoId={toDo.id} toDoText={toDo.text}/>
-    )} 
+   )}
     {magic.placeholder}   {/* <Card/>를 <Draggable/> 의 밖에 드래그할때 <Draggable/>의 크기를 고정시키는 역할*/}
-    </Area>)}
+    </Area>
+    )}
     </Droppable>
   
   

@@ -1,6 +1,9 @@
+import { logDOM } from "@testing-library/react";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { UpgradeToDoState } from "../atom";
 
 const Card = styled.div<{isDragging:boolean}>`
 border-radius: 5px;
@@ -18,6 +21,7 @@ interface IDragabbleCardProps{
 
 function DragabbleCard({toDoId, toDoText, index}:IDragabbleCardProps){
    // console.log(toDo, " has rendered")
+
     return (
         <Draggable draggableId={toDoId+""} index={index}>
             {/* key와 draggableId가 무조건 같아야 한다 */}
@@ -29,6 +33,7 @@ function DragabbleCard({toDoId, toDoText, index}:IDragabbleCardProps){
                 {...magic.dragHandleProps}>
                 {toDoText}
                 </Card>)}
+                
             </Draggable>
     );
 }

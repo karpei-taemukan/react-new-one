@@ -1,7 +1,7 @@
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { UpgradeToDoState,DeleteToDoState } from "../atom";
+import { UpgradeToDoState } from "../atom";
 import Board from "./Board";
 import DragabbleCard from "./DragabbleCard";
 
@@ -90,17 +90,32 @@ function UpgradeToDo(){
                 }
             })
         }
-        if(destination?.droppableId !== source.droppableId){
+
+        
+        if(destination?.droppableId !== source.droppableId
+            && destination?.droppableId === "delete"){
+            setToDos((allBoards) => {
+               const sourceBoard = [...allBoards[source.droppableId]];
+               sourceBoard.splice(source.index,1);
+               return {
+                   ...allBoards,
+                   [source.droppableId]:sourceBoard,
+                  }
+            });   
+           }  
+        if(destination?.droppableId !== source.droppableId 
+            && destination?.droppableId !== "delete"){
             // 서로 다른 보드끼리의 움직임
             // item이 움직이는 보드와 item을 추가해야하는 보드 2개를 복사
 
             setToDos((allBoards) => {
                const sourceBoard = [...allBoards[source.droppableId]];
                const destinationBoard = [...allBoards[destination.droppableId]];
+              // console.log(destinationBoard)
+              // console.log(typeof destinationBoard)
                const taskObj = sourceBoard[source.index];
                sourceBoard.splice(source.index,1);
                destinationBoard.splice(destination?.index,0,taskObj);
-
                return {
                 ...allBoards,
                 [source.droppableId]:sourceBoard,
@@ -108,6 +123,7 @@ function UpgradeToDo(){
                }
             })
         }
+    
     }   
 
 
@@ -123,7 +139,7 @@ function UpgradeToDo(){
     <Img 
     ref={provided.innerRef}
     {...provided.droppableProps}>
-    <Draggable draggableId="first" index={0}>
+   {/* <Draggable draggableId="first" index={0}>
     {(magic) => 
     <img
     ref={magic.innerRef}
@@ -133,7 +149,12 @@ function UpgradeToDo(){
     src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png"
     alt="delete" />
 }
-</Draggable>
+
+</Draggable> */}
+<img
+style={{width: "100px", height: "100px"}} 
+src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png" />
+{provided.placeholder}
 </Img>
     }    
 </Droppable>
