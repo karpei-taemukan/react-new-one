@@ -3,6 +3,7 @@ import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful
 import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { ObjectFlags } from "typescript";
 import { UpgradeToDoState } from "../atom";
 import Board from "./Board";
 import DragabbleCard from "./DragabbleCard";
@@ -68,16 +69,20 @@ function UpgradeToDo(){
 //console.log(todo)
 
 AddBoard((newBoard) => {
-    return {
+   // console.log(todo);
+    
+    const obj={
         ...newBoard,
-        "todo":[]
+        [todo] : [] // 변수 대입 [] 안에 넣기
     }
+    return obj;
 })
 setValue("todo","");
 }
 const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
 setOpenBoard(current => !current);
 }
+
     /*const onDragEnd = ({draggableId,destination,source}:DropResult) => {
         if(!destination){
             return;
@@ -180,10 +185,17 @@ setOpenBoard(current => !current);
         <Input {...register("todo", {required:true})}
          type="text" placeholder="Add Board"/>
         </Form> : null}
-            <Boards>
-        {Object.keys(toDos).map(boardId => (<Board key={boardId} toDos={toDos[boardId]} boardId={boardId}/>))}
-            </Boards>
-           
+
+{/*<Droppable droppableId="Boards">
+    {(magic, snapshot) => (
+     <Boards>    */}  
+     {/*   ref={magic.innerRef}
+    {...magic.droppableProps} */}
+        
+  {Object.keys(toDos).map(boardId => (<Board key={boardId} toDos={toDos[boardId]} boardId={boardId}/>))}
+                {/* </Boards>
+        )} </Droppable> */}
+
     <Droppable droppableId="delete">
     {(provided) => 
     <Img 

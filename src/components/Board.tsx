@@ -94,7 +94,7 @@ setToDos(allBoards => {
 setValue("toDo", "")
 }
     return (
-    <Wrapper>
+<Wrapper>
     <Title>{boardId}</Title>
 
     <Form onSubmit={handleSubmit(onValid)}>
@@ -127,8 +127,7 @@ setValue("toDo", "")
   
   
       
-    </Wrapper>
-    )
-}
+    </Wrapper>)}
+ 
 
 export default Board;
