@@ -1,5 +1,7 @@
+import React, { useState } from "react";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
+import { useForm } from "react-hook-form";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { UpgradeToDoState } from "../atom";
 import Board from "./Board";
@@ -15,6 +17,7 @@ margin: 0 auto;
 justify-content: center;
 align-items: center;
 height: 100vh;
+position: relative;
 `;
 
 const Boards = styled.div`
@@ -31,9 +34,50 @@ position: absolute;
 top: 80%;
 `;
 
+const Form = styled.form`
+width: 50%;
+position: absolute;
+top: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
+
+const Input = styled.input`
+border-radius: 15px;
+text-align:center;
+margin: 10px 0px;
+`;
+
+interface IForm{
+    todo: string
+}
+
+const Btn = styled.button`
+border-radius: 15px;
+text-align:center;
+margin: 10px 0px;
+`;
+
 function UpgradeToDo(){
     const [toDos, setToDos] = useRecoilState(UpgradeToDoState);
+    const {register, setValue, handleSubmit} = useForm<IForm>();
+    const AddBoard  = useSetRecoilState(UpgradeToDoState);
+    const [openBoard, setOpenBoard] = useState(false);
+    const onValid = ({todo}:IForm)=>{
+//console.log(todo)
 
+AddBoard((newBoard) => {
+    return {
+        ...newBoard,
+        "todo":[]
+    }
+})
+setValue("todo","");
+}
+const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
+setOpenBoard(current => !current);
+}
     /*const onDragEnd = ({draggableId,destination,source}:DropResult) => {
         if(!destination){
             return;
@@ -130,6 +174,12 @@ function UpgradeToDo(){
 
     return (<DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
+        <Btn onClick={onClick}><h1>Add Board</h1></Btn>
+        {openBoard ? <Form onSubmit={handleSubmit(onValid)}>
+        
+        <Input {...register("todo", {required:true})}
+         type="text" placeholder="Add Board"/>
+        </Form> : null}
             <Boards>
         {Object.keys(toDos).map(boardId => (<Board key={boardId} toDos={toDos[boardId]} boardId={boardId}/>))}
             </Boards>
