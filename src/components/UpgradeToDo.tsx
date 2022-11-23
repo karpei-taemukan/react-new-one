@@ -58,7 +58,11 @@ const Btn = styled.button`
 border-radius: 15px;
 text-align:center;
 margin: 10px 0px;
+position: absolute;
+top: 25px;
 `;
+
+const BoardList = styled.div``;
 
 function UpgradeToDo(){
     const [toDos, setToDos] = useRecoilState(UpgradeToDoState);
@@ -172,10 +176,8 @@ setOpenBoard(current => !current);
                }
             })
         }
-    
-    }   
 
-
+     }
 
     return (<DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
@@ -185,16 +187,25 @@ setOpenBoard(current => !current);
         <Input {...register("todo", {required:true})}
          type="text" placeholder="Add Board"/>
         </Form> : null}
+<div>
+<Droppable droppableId="MoveBoards">
+{(magic) => 
+<Boards ref={magic.innerRef} {...magic.droppableProps}>
+  {Object.keys(toDos).map((boardId, index) => 
+  (
+<Draggable draggableId="BoardList" index={index}>
+{(magic) =>
+<BoardList ref={magic.innerRef} {...magic.dragHandleProps} {...magic.draggableProps}>
+<Board key={boardId} toDos={toDos[boardId]} boardId={boardId}/>
+</BoardList>
+}</Draggable>
+  ))}
+</Boards>
+  }
+</Droppable>
+</div>
 
-{/*<Droppable droppableId="Boards">
-    {(magic, snapshot) => (
-     <Boards>    */}  
-     {/*   ref={magic.innerRef}
-    {...magic.droppableProps} */}
-        
-  {Object.keys(toDos).map(boardId => (<Board key={boardId} toDos={toDos[boardId]} boardId={boardId}/>))}
-                {/* </Boards>
-        )} </Droppable> */}
+
 
     <Droppable droppableId="delete">
     {(provided) => 

@@ -53,7 +53,7 @@ margin: 10px 0px;
 
 interface IBoardProp{
     toDos: ITodo[],
-    boardId: string
+    boardId: string,
 } 
 
 interface IForm{
@@ -94,6 +94,7 @@ setToDos(allBoards => {
 setValue("toDo", "")
 }
     return (
+
 <Wrapper>
     <Title>{boardId}</Title>
 
@@ -127,7 +128,9 @@ setValue("toDo", "")
   
   
       
-    </Wrapper>)}
- 
+</Wrapper>
+
+)
+}
 
 export default Board;
