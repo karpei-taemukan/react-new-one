@@ -1,10 +1,11 @@
+import { findSourceMap } from "module";
 import React, { useState } from "react";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ObjectFlags } from "typescript";
-import { UpgradeToDoState } from "../atom";
+import { UpgradeToDoState, BoardState } from "../atom";
 import Board from "./Board";
 import DragabbleCard from "./DragabbleCard";
 
@@ -17,7 +18,7 @@ width: 100%;
 margin: 0 auto;
 justify-content: center;
 align-items: center;
-height: 100vh;
+height: 50vh;
 position: relative;
 `;
 
@@ -25,14 +26,15 @@ const Boards = styled.div`
 display: grid;
 width: 100%;
 grid-template-columns: repeat(3, 1fr);
-gap: 10px;
+gap: 10%;
+top: 10%;
 position: relative;
 `;
 
 const Img = styled.div`
-margin: 0 auto;
 position: absolute;
-top: 80%;
+top: 30%;
+right: 45%;
 `;
 
 const Form = styled.form`
@@ -69,6 +71,8 @@ function UpgradeToDo(){
     const {register, setValue, handleSubmit} = useForm<IForm>();
     const AddBoard  = useSetRecoilState(UpgradeToDoState);
     const [openBoard, setOpenBoard] = useState(false);
+    const [boards,setBoards] = useRecoilState(BoardState); 
+    //console.log(setBoards);
     const onValid = ({todo}:IForm)=>{
 //console.log(todo)
 
@@ -123,7 +127,8 @@ setOpenBoard(current => !current);
         if(!destination){
             return;
         }
-        if(destination?.droppableId === source.droppableId){
+
+        if(destination?.droppableId === source.droppableId && source.droppableId !== "boards" && destination?.droppableId !== "boards"){
             // 같은 보드 내에서의 움직임
              // 변화된 보드만 추가, 나머지 보드들은 유지한다 
 
@@ -145,7 +150,7 @@ setOpenBoard(current => !current);
         }
 
         
-        if(destination?.droppableId !== source.droppableId
+       else if(destination?.droppableId !== source.droppableId
             && destination?.droppableId === "delete"){
             setToDos((allBoards) => {
                const sourceBoard = [...allBoards[source.droppableId]];
@@ -155,8 +160,12 @@ setOpenBoard(current => !current);
                    [source.droppableId]:sourceBoard,
                   }
             });   
+
+
+
+
            }  
-        if(destination?.droppableId !== source.droppableId 
+       else if(destination?.droppableId !== source.droppableId 
             && destination?.droppableId !== "delete"){
             // 서로 다른 보드끼리의 움직임
             // item이 움직이는 보드와 item을 추가해야하는 보드 2개를 복사
@@ -164,7 +173,7 @@ setOpenBoard(current => !current);
             setToDos((allBoards) => {
                const sourceBoard = [...allBoards[source.droppableId]];
                const destinationBoard = [...allBoards[destination.droppableId]];
-              // console.log(destinationBoard)
+               //console.log(destinationBoard)
               // console.log(typeof destinationBoard)
                const taskObj = sourceBoard[source.index];
                sourceBoard.splice(source.index,1);
@@ -177,6 +186,36 @@ setOpenBoard(current => !current);
             })
         }
 
+       else if(destination.droppableId ==="boards" && source.droppableId === "boards"){
+            /*setToDos((board) => {
+               const sourceBoard = [...board[source.index]];
+               const destinationBoard = [...board[destination?.index]];
+               const taskObj = sourceBoard[source.index]
+               sourceBoard.splice(source.index,1);
+               destinationBoard.splice(destination?.index,0,taskObj);
+                return {
+                    ...board,
+                    [source.index]:sourceBoard,
+                    [destination?.index]:destinationBoard
+                }*/
+
+                setToDos((board) => {
+                    const arrs = Object.entries(board);
+                    console.log(arrs)
+                    console.log(source.index, destination?.index);
+                    const removeBoard = arrs[source.index]
+                    arrs.splice(source.index,1);
+                    arrs.splice(destination?.index,0,removeBoard)
+                    const moveBoard = Object.fromEntries(arrs);
+                    console.log(moveBoard)
+                    return moveBoard
+                })
+            
+          
+
+       
+         }
+
      }
 
     return (<DragDropContext onDragEnd={onDragEnd}>
@@ -187,28 +226,31 @@ setOpenBoard(current => !current);
         <Input {...register("todo", {required:true})}
          type="text" placeholder="Add Board"/>
         </Form> : null}
-<div>
-<Droppable droppableId="MoveBoards">
+        </Wrapper>
+<Droppable droppableId="boards" direction="horizontal" type="board">
 {(magic) => 
+(<BoardList>
 <Boards ref={magic.innerRef} {...magic.droppableProps}>
-  {Object.keys(toDos).map((boardId, index) => 
-  (
-<Draggable draggableId="BoardList" index={index}>
-{(magic) =>
-<BoardList ref={magic.innerRef} {...magic.dragHandleProps} {...magic.draggableProps}>
-<Board key={boardId} toDos={toDos[boardId]} boardId={boardId}/>
-</BoardList>
-}</Draggable>
-  ))}
+  {Object.keys(toDos).map((boardId, index) => (
+<Board 
+key={boardId} 
+toDos={toDos[boardId]} 
+boardId={boardId}
+index={index}
+/>)
+)}
+ {magic.placeholder}
 </Boards>
+</BoardList>)
   }
 </Droppable>
-</div>
+
 
 
 
     <Droppable droppableId="delete">
     {(provided) => 
+  
     <Img 
     ref={provided.innerRef}
     {...provided.droppableProps}>
@@ -229,10 +271,9 @@ style={{width: "100px", height: "100px"}}
 src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png" />
 {provided.placeholder}
 </Img>
-    }    
+  }    
 </Droppable>
-    
-        </Wrapper>
+
     </DragDropContext>)
 }
 

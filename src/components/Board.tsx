@@ -54,13 +54,14 @@ margin: 10px 0px;
 interface IBoardProp{
     toDos: ITodo[],
     boardId: string,
+    index: number;
 } 
 
 interface IForm{
     toDo:string;
 }
 
-function Board({toDos, boardId}:IBoardProp){
+function Board({index, toDos, boardId}:IBoardProp){
 //console.log(toDos)
     const inputRef = useRef<HTMLInputElement>(null); // typescript에게 무엇을 받아올건지 말해야한다
     const onClick = () => {
@@ -94,8 +95,9 @@ setToDos(allBoards => {
 setValue("toDo", "")
 }
     return (
-
-<Wrapper>
+<Draggable index={index} draggableId={boardId} key={boardId}>
+{(magic) => (
+<Wrapper ref={magic.innerRef} {...magic.dragHandleProps} {...magic.draggableProps} >
     <Title>{boardId}</Title>
 
     <Form onSubmit={handleSubmit(onValid)}>
@@ -129,7 +131,8 @@ setValue("toDo", "")
   
       
 </Wrapper>
-
+)}
+</Draggable>
 )
 }
 
