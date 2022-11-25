@@ -93,13 +93,3 @@ export const UpgradeToDoState = atom<IToDoState>({
     },
     effects_UNSTABLE: [persistAtom]
 });
-
-export const BoardState = atom<IToDoState>({
-    key: 'boards',
-    default:{
-        to_do : [],
-        doing: [],
-        done: [],
-    },
-    effects_UNSTABLE: [persistAtom],
-  });

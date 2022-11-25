@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ObjectFlags } from "typescript";
-import { UpgradeToDoState, BoardState } from "../atom";
+import { UpgradeToDoState } from "../atom";
 import Board from "./Board";
 import DragabbleCard from "./DragabbleCard";
 
@@ -32,9 +32,9 @@ position: relative;
 `;
 
 const Img = styled.div`
+width: 100%;
 position: absolute;
 top: 30%;
-right: 45%;
 `;
 
 const Form = styled.form`
@@ -71,7 +71,7 @@ function UpgradeToDo(){
     const {register, setValue, handleSubmit} = useForm<IForm>();
     const AddBoard  = useSetRecoilState(UpgradeToDoState);
     const [openBoard, setOpenBoard] = useState(false);
-    const [boards,setBoards] = useRecoilState(BoardState); 
+
     //console.log(setBoards);
     const onValid = ({todo}:IForm)=>{
 //console.log(todo)
@@ -202,11 +202,14 @@ setOpenBoard(current => !current);
                 setToDos((board) => {
                     const arrs = Object.entries(board);
                     console.log(arrs)
-                    console.log(source.index, destination?.index);
+                  //  console.log(source.index, destination?.index);
                     const removeBoard = arrs[source.index]
                     arrs.splice(source.index,1);
                     arrs.splice(destination?.index,0,removeBoard)
                     const moveBoard = Object.fromEntries(arrs);
+
+
+
                     console.log(moveBoard)
                     return moveBoard
                 })
@@ -250,12 +253,13 @@ index={index}
 
     <Droppable droppableId="delete">
     {(provided) => 
-  
+   
     <Img 
     ref={provided.innerRef}
     {...provided.droppableProps}>
-   {/* <Draggable draggableId="first" index={0}>
+    <Draggable draggableId="delete" index={0}>
     {(magic) => 
+
     <img
     ref={magic.innerRef}
     {...magic.draggableProps} //--> 드래그 가능하게 해줌 
@@ -263,14 +267,16 @@ index={index}
     style={{width: "100px", height: "100px"}} 
     src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png"
     alt="delete" />
+
 }
 
-</Draggable> */}
-<img
+</Draggable> 
+{/*<img
 style={{width: "100px", height: "100px"}} 
-src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png" />
+src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png" />*/}
 {provided.placeholder}
 </Img>
+
   }    
 </Droppable>
 

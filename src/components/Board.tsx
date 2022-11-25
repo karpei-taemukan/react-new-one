@@ -1,20 +1,21 @@
 import DragabbleCard from "./DragabbleCard"
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import styled from "styled-components";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { ITodo, UpgradeToDoState } from "../atom";
 import { useSetRecoilState } from "recoil";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{isDragging:boolean}>`
 width: 300px;
 padding-top: 10px;
-background-color: ${props => props.theme.boardColor};
+background-color: ${props => props.isDragging ? "#00dae3" : "#f8b62d"};
+transition: background-color 0.3s ease-in-out;
 border-radius: 5px;
 min-height: 200px;
 display:flex;
 flex-direction: column;
-
+position: relative;
 `;
 
 const Title = styled.h1`
@@ -48,7 +49,14 @@ text-align:center;
 margin: 10px 0px;
 `;
 
-
+const DeleteBoard = styled.button`
+background-color: inherit;
+border: none;
+position: absolute;
+right: 8%;
+width: 40px;
+height: 40px;
+`;
 
 
 interface IBoardProp{
@@ -90,16 +98,29 @@ setToDos(allBoards => {
     }
 })
 
-
-
 setValue("toDo", "")
+
+
+}
+
+const onDeleteBoard = () => {
+    setToDos(allBoards => {
+        const arrs = Object.entries(allBoards);
+        console.log(arrs)
+        console.log(allBoards)
+       const filteredBoard= arrs.filter(arr => arr[0] !== boardId)
+       console.log(filteredBoard);
+       const finalBoard = Object.fromEntries(filteredBoard);
+       console.log(finalBoard, typeof finalBoard)
+        return finalBoard;
+    })
 }
     return (
 <Draggable index={index} draggableId={boardId} key={boardId}>
-{(magic) => (
-<Wrapper ref={magic.innerRef} {...magic.dragHandleProps} {...magic.draggableProps} >
+{(magic,snapshot) => (
+<Wrapper isDragging={snapshot.isDragging} ref={magic.innerRef} {...magic.dragHandleProps} {...magic.draggableProps} >
+    <DeleteBoard onClick={onDeleteBoard}>❌</DeleteBoard>
     <Title>{boardId}</Title>
-
     <Form onSubmit={handleSubmit(onValid)}>
     <Input 
     {...register("toDo",{required:true})} 
