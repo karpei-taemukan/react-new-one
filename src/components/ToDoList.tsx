@@ -6,6 +6,9 @@ import { toDoSelector } from "../atom";
 import React from "react";
 import { Link } from "react-router-dom";
 
+
+
+
 function ToDoList(){
     // const toDos = useRecoilValue(toDostate);
     // useRecoilValue: atom이나 selector의 값만 반환
@@ -27,6 +30,10 @@ setCategory(event.currentTarget.value as any);
 //console.log(category);
 //console.log(toDos);
 
+
+// ------------------------------------------------------------------------------------
+
+
 const [minutes, setMinutes] = useRecoilState(minutesState);
 //const hours = useRecoilValue(hoursSelector);
 //console.log(hours);
@@ -47,12 +54,13 @@ const onHoursChange = (event:React.FormEvent<HTMLInputElement>) => {
 }
 
 return (
-    <div>
+    <>
     {category === "TO_DO" ? <h1>TO_DO</h1>:null}
     {category==="DOING" ? <h1>DOING</h1>:null}
     {category==="DONE" ? <h1>DONE</h1> :null}
     <Link to={{pathname: "/UpgradeToDo/"}}>UpgradeToDo</Link>
     <hr />
+    <br />
     <select value={category} onInput={onInput}>
     <option value={Categories.TO_DO}>To Do</option>
     <option value={Categories.DOING}>Doing</option>
@@ -93,10 +101,12 @@ return (
 
 {/*  </ul>
 */}  
-
+<hr />
+<h1>A TIME CONVERTER</h1>
+<br />
 <input onChange={onMinutesChange} value={minutes} type="number" placeholder="Minutes" />
 <input onChange={onHoursChange} value={hours} type="number" placeholder="Hours" />
-    </div>)
+    </>)
 }
 
 export default ToDoList;

@@ -1,7 +1,11 @@
 import { atom, readOnlySelector, selector } from "recoil"
 import { recoilPersist } from 'recoil-persist'
 
-const { persistAtom } = recoilPersist()
+const { persistAtom } = recoilPersist({
+    key: "all",
+    storage: localStorage
+},
+)
 
 //type categories = "TO_DO" | "DOING" | "DONE";
 
@@ -16,6 +20,21 @@ export enum Categories {
 "DOING"="DOING",
 "DONE"="DONE" 
 }
+
+
+export interface ICategory {
+id: number,
+categories: []
+}
+
+export const CategoryState = atom<ICategory[]>({
+    key: "CategoryState",
+    default: [],
+    effects_UNSTABLE: [persistAtom]
+})
+
+
+
 
 export interface IToDo{
     text:string;
@@ -35,11 +54,13 @@ export const toDostate = atom<IToDo[]>({ // atom의 type이 ToDO의 배열임을
     // atom은 꼭 props를 저장하는 데가 아닌 변경할 data 저장 장소이다 
 
     // selector는 atom의 output을 변형시키는 도구
-
+    
 export const categoryState = atom<Categories>({
     key:"category",
     default:Categories.TO_DO,
 });
+
+
 
 export const toDoSelector = selector({
     key:"toDoSelector",
