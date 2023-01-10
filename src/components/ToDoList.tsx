@@ -20,24 +20,30 @@ function ToDoList(){
 //  const [toDo, doing, done] = useRecoilValue(toDoSelector);
 const toDos = useRecoilValue(toDoSelector);
 const Category = useRecoilValue(CategorySelector);
-console.log(Object.keys(Category))
+//console.log(Object.keys(Category))
 
 const [category, setCategory] = useRecoilState(categoryState);
 {/* useRecoilState은 atom 값과 atom을 수정하는 modifier 함수를 반환 */}
 
 const [cate, setcate] = useRecoilState(CategoryState);
 console.log(cate);
-for(let i=0; i<Object.keys(Category).length; i++){
+console.log(Object.keys(Category))
+/*for(let i=0; i<Object.keys(Category).length; i++){
 console.log(Object.keys(Category)[i])
-}
+}*/
 const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
-console.log(event.currentTarget.value);
+//console.log(event.currentTarget.value);
 setCategory(event.currentTarget.value as any);
 }
 //console.log(category);
 //console.log(toDos);
+let ev: any ;
+const handleInput = (event:React.FormEvent<HTMLSelectElement>) => {
+  ev=event.currentTarget.value;
+  console.log(typeof event.currentTarget.value)
+  Object.keys(Category).push(ev);
 
-
+  }
 // ------------------------------------------------------------------------------------
 
 
@@ -65,7 +71,7 @@ return (
     {category === "TO_DO" ? <h1>TO_DO</h1>:null}
     {category==="DOING" ? <h1>DOING</h1>:null}
     {category==="DONE" ? <h1>DONE</h1> :null}
-    <Link to={{pathname: "/UpgradeToDo/"}}>UpgradeToDo</Link>
+    <Link to={{pathname: "/UpgradeToDo/"}}><h1>Draggable Board is here, click here~!</h1></Link>
     <hr />
     <br />
     <select value={category} onInput={onInput}>
@@ -75,11 +81,15 @@ return (
     </select>
     <CreateToDo />
 
-    <select>
-    {Object.keys(Category).map((category) => (
-      <option>{category}</option>
-    ))}
-    </select>
+   
+    <select onChange={handleInput}>
+    {Object.keys(Category).map((category, index) => (
+        <option key={index} value={category}>{category}</option>
+        ))}
+        </select>
+   {/* {ev === category? <>{Object.keys(Category).map((cate,index) => <span key={index}>{cate}</span>)}</> : null}
+  {ev !== cate ? <><h1>{Object.keys(Category)}</h1></> : null}
+  */}
    {toDos?.map(aToDo => (<ToDo key={aToDo.id} {...aToDo}/>))}
 
    {/* {category === "TO_DO" && toDo.map(aToDo => <ToDo key={aToDo.id} {...aToDo}/>)}
