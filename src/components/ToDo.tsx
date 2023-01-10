@@ -9,6 +9,7 @@ function ToDo({text, category, id}:IToDo){
     const setToDos = useSetRecoilState(toDostate);
     const toDos = useRecoilValue(toDoSelector);
 
+console.log(text)
 //console.log(id)
     
     const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {

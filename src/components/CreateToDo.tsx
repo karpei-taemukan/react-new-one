@@ -20,7 +20,7 @@ const category = useRecoilValue(categoryState);
 
 const setCategory = useSetRecoilState(CategoryState);
 const Category = useRecoilValue(CategoryState);
-console.log(Category);
+//console.log(Category);
 /*const random = Date.now();
 useEffect(() => {
     localStorage.setItem(random+"", JSON.stringify(toDostate));
@@ -29,7 +29,7 @@ useEffect(() => {
 
 const handleValid = ({toDo}:IForm) => {
         //console.log(data,data.toDo)
-        console.log(toDo)
+       // console.log(toDo)
         
 
         setValue("toDo", "");
@@ -41,15 +41,17 @@ const handleValid = ({toDo}:IForm) => {
         }
 
         const onValid = ({category}:ICategory) => {
-           // console.log(category);
+          //  console.log(category);
+          CategoryForm.setValue("category", "");
             setCategory((oldCategory) => {
         
-                return {
+               return {
                     ...oldCategory,
-                    [category]: [{id: Date.now()}]
+                    [category]: [{Ctext: category,Cid: Date.now(), Ccategory:[category]}]
                 };
+
+     
             })
-            CategoryForm.setValue("category", "");
             }
 
     return (

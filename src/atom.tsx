@@ -23,8 +23,9 @@ export enum Categories {
 
 
 export interface ICategory {
-id: number,
-categories: []
+Ctext:string,
+Cid: number,
+Ccategory: string[],
 }
 
 export const CategoryState = atom<ICategory[]>({
@@ -33,7 +34,14 @@ export const CategoryState = atom<ICategory[]>({
     effects_UNSTABLE: [persistAtom]
 })
 
-
+export const CategorySelector = selector({
+    key: "CategorySelector",
+    get: ({get}) => {
+    const Category = get(CategoryState);
+    return Category
+    }
+    }
+)
 
 
 export interface IToDo{

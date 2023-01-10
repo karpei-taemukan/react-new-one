@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue} from "recoil";
-import { toDostate, categoryState, Categories, minutesState, hoursSelector } from "../atom";
+import { toDostate, categoryState, Categories, minutesState, hoursSelector,CategorySelector,CategoryState } from "../atom";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 import { toDoSelector } from "../atom";
@@ -19,12 +19,19 @@ function ToDoList(){
   //  const toDos= useRecoilValue(toDostate);
 //  const [toDo, doing, done] = useRecoilValue(toDoSelector);
 const toDos = useRecoilValue(toDoSelector);
+const Category = useRecoilValue(CategorySelector);
+console.log(Object.keys(Category))
 
 const [category, setCategory] = useRecoilState(categoryState);
 {/* useRecoilState은 atom 값과 atom을 수정하는 modifier 함수를 반환 */}
 
+const [cate, setcate] = useRecoilState(CategoryState);
+console.log(cate);
+for(let i=0; i<Object.keys(Category).length; i++){
+console.log(Object.keys(Category)[i])
+}
 const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
-//console.log(event.currentTarget.value);
+console.log(event.currentTarget.value);
 setCategory(event.currentTarget.value as any);
 }
 //console.log(category);
@@ -68,6 +75,11 @@ return (
     </select>
     <CreateToDo />
 
+    <select>
+    {Object.keys(Category).map((category) => (
+      <option>{category}</option>
+    ))}
+    </select>
    {toDos?.map(aToDo => (<ToDo key={aToDo.id} {...aToDo}/>))}
 
    {/* {category === "TO_DO" && toDo.map(aToDo => <ToDo key={aToDo.id} {...aToDo}/>)}
