@@ -4,7 +4,7 @@ import UpgradeToDo from './components/UpgradeToDo';
 
 function Router(){
 return (
-<BrowserRouter>
+<BrowserRouter basename={process.env.PUBLIC_URL}>
 <Routes>
 <Route path="/" element={<ToDoList/>}/>
 <Route path="/UpgradeToDo" element={<UpgradeToDo/>}/>      
