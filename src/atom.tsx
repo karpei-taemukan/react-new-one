@@ -1,4 +1,4 @@
-import { atom, readOnlySelector, selector } from "recoil"
+import { atom, selector } from "recoil"
 import { recoilPersist } from 'recoil-persist'
 
 const { persistAtom } = recoilPersist({
@@ -8,18 +8,6 @@ const { persistAtom } = recoilPersist({
 )
 
 //type categories = "TO_DO" | "DOING" | "DONE";
-
-export enum Categories { 
-// 코드 전체에서 "TO_DO","DOING","DONE" 을 사용하고 싶다
-//"TO_DO","DOING","DONE" 과 같은 string을 쓰면서 실수를 줄이기 위함
- //   "TO_DO","DOING","DONE" 
-// "TO_DO","DOING","DONE" 사실 숫자이다 
-// 그래서 <button name={Categories.TO_DO}></button> 는 에러 
-// name에 숫자가 들어갔기 때문
-"TO_DO"="TO_DO",
-"DOING"="DOING",
-"DONE"="DONE" 
-}
 
 
 export interface ICategory {
@@ -43,11 +31,23 @@ export const CategorySelector = selector({
     }
 )
 
+//-----------------------------------------------------------------------------
 
+export enum Categories { 
+    // 코드 전체에서 "TO_DO","DOING","DONE" 을 사용하고 싶다
+    //"TO_DO","DOING","DONE" 과 같은 string을 쓰면서 실수를 줄이기 위함
+     //   "TO_DO","DOING","DONE" 
+    // "TO_DO","DOING","DONE" 사실 숫자이다 
+    // 그래서 <button name={Categories.TO_DO}></button> 는 에러 
+    // name에 숫자가 들어갔기 때문
+    "TO_DO"="TO_DO",
+    "DOING"="DOING",
+    "DONE"="DONE" 
+    }
 export interface IToDo{
     text:string;
     id: number;
-    category: Categories
+    category:Categories
     }
     //let output = localStorage.getItem("TODOS");
     //let localData = JSON.parse(output as any);
@@ -69,13 +69,15 @@ export const categoryState = atom<Categories>({
 });
 
 
-
 export const toDoSelector = selector({
     key:"toDoSelector",
     get: ({get}) => { // get 함수는 selector가 어떤 것을 반환할지 결정한다
         const toDos = get(toDostate);
         const category = get(categoryState);
       return toDos.filter((toDo) => toDo.category === category);
+
+
+
       
     {/*return [
     toDos.filter((toDo) => toDo.category === "TO_DO"),
@@ -84,6 +86,9 @@ export const toDoSelector = selector({
 ];*/}
     } 
 })
+
+
+//---------------------------------------------------------------------------------------
 
 export const minutesState = atom({
     key:"minute",
@@ -102,6 +107,8 @@ export const hoursSelector = selector({
     set(minutesState,minutes);
     }
 })
+
+//---------------------------------------------------------------------------------------
 
 export interface ITodo {
     id:number;

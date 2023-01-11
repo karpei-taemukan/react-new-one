@@ -48,21 +48,23 @@ console.log(text)
      인자를 전달하기 위해 익명함수 선언  
      인자를 받는 함수를 만든다 
     */}
-  {/*  {category !== "DOING" && <button onClick={()=>onClick("DOING")}>Doing</button>}
+  {/* {category !== "DOING" && <button onClick={()=>onClick("DOING")}>Doing</button>}
     {category !== "TO_DO" && <button onClick={()=>onClick("TO_DO")}>To Do</button>}
     {category !== "DONE" && <button onClick={()=>onClick("DONE")}>Done</button>}
-*/}
+  */}
+{/*
 {category !== Categories.DOING 
-&& <button /*name={Categories.DOING + ""} string 변환*/name={Categories.DOING} onClick={onClick}>Doing</button>
+&& <button /*name={Categories.DOING + ""} string 변환 name={Categories.DOING} onClick={onClick}>Doing</button>
 }
-<button onClick={onDelete}>Delete</button>
 {category !== Categories.TO_DO 
-&& <button /*name={Categories.TO_DO + ""}*/ name={Categories.TO_DO} onClick={onClick}>To Do</button>
+&& <button /*name={Categories.TO_DO + ""} name={Categories.TO_DO} onClick={onClick}>To Do</button>
 }
 
 {category !== Categories.DONE 
-&& <button /*name={Categories.DONE + ""} */ name={Categories.DONE} onClick={onClick}>Done</button>
+&& <button /*name={Categories.DONE + ""} name={Categories.DONE} onClick={onClick}>Done</button>
 }
+*/}
+<button onClick={onDelete}>Delete</button>
     </li>
     </>)
 }

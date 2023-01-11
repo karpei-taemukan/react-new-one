@@ -35,7 +35,9 @@ const handleValid = ({toDo}:IForm) => {
         setValue("toDo", "");
         setToDos((oldToDos) => 
         {
-       return [...oldToDos,{text:toDo, category, id: Date.now()}]
+ return [...oldToDos,{text:toDo, category, id: Date.now()}]
+ 
+
         });
 
         }
@@ -62,7 +64,7 @@ const handleValid = ({toDo}:IForm) => {
     </form>
     <br />
     <form onSubmit={CategoryForm.handleSubmit(onValid)}>
-    <input {...CategoryForm.register("category")} placeholder="Write a catagory List" />  
+    <input {...CategoryForm.register("category")} placeholder="Write a category List" />  
     <button>Add</button>
     </form>
 

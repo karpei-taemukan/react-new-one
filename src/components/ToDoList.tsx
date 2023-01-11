@@ -1,9 +1,9 @@
 import { useRecoilState, useRecoilValue} from "recoil";
-import { toDostate, categoryState, Categories, minutesState, hoursSelector,CategorySelector,CategoryState } from "../atom";
+import { toDostate, categoryState, Categories, minutesState, hoursSelector,CategorySelector,CategoryState, ICategory } from "../atom";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 import { toDoSelector } from "../atom";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -26,24 +26,30 @@ const [category, setCategory] = useRecoilState(categoryState);
 {/* useRecoilState은 atom 값과 atom을 수정하는 modifier 함수를 반환 */}
 
 const [cate, setcate] = useRecoilState(CategoryState);
-console.log(cate);
-console.log(Object.keys(Category))
+//console.log(cate);
+//console.log(Object.keys(Category))
 /*for(let i=0; i<Object.keys(Category).length; i++){
 console.log(Object.keys(Category)[i])
 }*/
-const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
+//const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
 //console.log(event.currentTarget.value);
-setCategory(event.currentTarget.value as any);
-}
+//setCategory(event.currentTarget.value as any);
+//}
 //console.log(category);
 //console.log(toDos);
-let ev: any ;
+//let ev: any ;
 const handleInput = (event:React.FormEvent<HTMLSelectElement>) => {
-  ev=event.currentTarget.value;
-  console.log(typeof event.currentTarget.value)
-  Object.keys(Category).push(ev);
-
+  //ev=event.currentTarget.value;
+  //console.log(typeof event.currentTarget.value)
+  console.log(event.currentTarget.value)
+  setcate(cate)
   }
+
+  const onDelete = (event:React.MouseEvent<HTMLButtonElement>)=>{
+    const {currentTarget:{value}} = event;
+setcate([]);
+   }
+
 // ------------------------------------------------------------------------------------
 
 
@@ -68,28 +74,31 @@ const onHoursChange = (event:React.FormEvent<HTMLInputElement>) => {
 
 return (
     <>
-    {category === "TO_DO" ? <h1>TO_DO</h1>:null}
+    {/*{category === "TO_DO" ? <h1>TO_DO</h1>:null}
     {category==="DOING" ? <h1>DOING</h1>:null}
-    {category==="DONE" ? <h1>DONE</h1> :null}
+{category==="DONE" ? <h1>DONE</h1> :null}*/}
     <Link to={{pathname: "/UpgradeToDo/"}}><h1>Draggable Board is here, click here~!</h1></Link>
     <hr />
     <br />
-    <select value={category} onInput={onInput}>
+   {/* <select value={category} onInput={onInput}>
     <option value={Categories.TO_DO}>To Do</option>
     <option value={Categories.DOING}>Doing</option>
     <option value={Categories.DONE}>Done</option>
-    </select>
-    <CreateToDo />
+</select>*/}
 
-   
-    <select onChange={handleInput}>
+<select onInput={handleInput}>
     {Object.keys(Category).map((category, index) => (
         <option key={index} value={category}>{category}</option>
         ))}
         </select>
-   {/* {ev === category? <>{Object.keys(Category).map((cate,index) => <span key={index}>{cate}</span>)}</> : null}
-  {ev !== cate ? <><h1>{Object.keys(Category)}</h1></> : null}
-  */}
+        <button onClick={onDelete}>Delete categories</button>
+  {/*{Object.keys(Category) ? Object.keys(Category).map((category, index) => (<h1 key={index}>{category}</h1>)) : null}
+ */}
+
+    <CreateToDo />
+
+   
+ 
    {toDos?.map(aToDo => (<ToDo key={aToDo.id} {...aToDo}/>))}
 
    {/* {category === "TO_DO" && toDo.map(aToDo => <ToDo key={aToDo.id} {...aToDo}/>)}
