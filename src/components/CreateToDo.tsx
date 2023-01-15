@@ -31,8 +31,11 @@ const handleValid = ({toDo}:IForm) => {
 
         setValue("toDo", "");
         setToDos((oldToDos) => 
-  [...oldToDos,{text:toDo, category, id: Date.now()}]
-        );
+        {
+ return [...oldToDos,{text:toDo, category, id: Date.now()}]
+ 
+
+        });
 
         }
  // ----------------------------------------------------------------

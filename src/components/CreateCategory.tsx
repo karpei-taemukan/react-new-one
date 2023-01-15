@@ -11,7 +11,7 @@ function CreateCategory(){
     const setCategory = useSetRecoilState(NewCategoryState);
 
     const onValid = ({category}:IForm) => {
-        setCategory((oldCategory: any) => 
+        setCategory((oldCategory) => 
         [...oldCategory,category])
           CategoryForm.setValue("category", "");
           }
