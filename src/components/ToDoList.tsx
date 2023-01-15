@@ -32,10 +32,7 @@ const [newcategory, setnewcategory] = useRecoilState(NewCategoryState);
 const NewCategory = useRecoilValue(NewCategoryState);
 //console.log(NewCategory)
 //console.log(newcategory);
-//console.log(Object.keys(Category))
-/*for(let i=0; i<Object.keys(Category).length; i++){
-console.log(Object.keys(Category)[i])
-}*/
+
 const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
 //console.log(event.currentTarget.value);
 const {currentTarget:{value}} = event;
@@ -102,12 +99,6 @@ return (
       <option key={i} value={category}>{category}</option>
     ))}
 </select>
-
-{/*<select onInput={handleInput}>
-    {Object.keys(Category).map((category, index) => (
-        <option key={index} value={category}>{category}</option>
-        ))}
-    </select>*/}
 
  
         <button onClick={onDelete}>Delete categories</button>
