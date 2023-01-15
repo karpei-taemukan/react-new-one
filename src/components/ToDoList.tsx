@@ -1,11 +1,14 @@
 import { useRecoilState, useRecoilValue} from "recoil";
-import { toDostate, categoryState, Categories, minutesState, hoursSelector,CategorySelector,NewCategoryState, ICategory } from "../atom";
+import { toDostate, categoryState, Categories, minutesState, hoursSelector,CategorySelector,NewCategoryState } from "../atom";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 import { toDoSelector } from "../atom";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import CreateCategory from "./CreateCategory";
+
+//const TODO_KEY = 'toDos';
+//const CATEGORIES_KEY = 'additional_categories';
 
 function ToDoList(){
     // const toDos = useRecoilValue(toDostate);
@@ -17,6 +20,7 @@ function ToDoList(){
   //  const toDos= useRecoilValue(toDostate);
 //  const [toDo, doing, done] = useRecoilValue(toDoSelector);
 const toDos = useRecoilValue(toDoSelector);
+//const [rawToDos, setRawToDos] = useRecoilState(toDostate);
 const Category = useRecoilValue(CategorySelector);
 //console.log(Object.keys(Category))
 
@@ -24,9 +28,9 @@ const [category, setCategory] = useRecoilState(categoryState);
 {/* useRecoilState은 atom 값과 atom을 수정하는 modifier 함수를 반환 */}
 
 const [newcategory, setnewcategory] = useRecoilState(NewCategoryState);
-console.log(newcategory)
+//console.log(newcategory)
 const NewCategory = useRecoilValue(NewCategoryState);
-console.log(NewCategory)
+//console.log(NewCategory)
 //console.log(newcategory);
 //console.log(Object.keys(Category))
 /*for(let i=0; i<Object.keys(Category).length; i++){
@@ -74,6 +78,14 @@ const onHoursChange = (event:React.FormEvent<HTMLInputElement>) => {
   setHours(+event.currentTarget.value);
 }
 
+/*useEffect(() => {
+  localStorage.setItem(TODO_KEY, JSON.stringify(rawToDos));
+}, [rawToDos]);
+
+useEffect(() => {
+  localStorage.setItem(CATEGORIES_KEY, JSON.stringify(newcategory));
+}, [newcategory]);
+*/
 return (
     <>
     {/*{category === "TO_DO" ? <h1>TO_DO</h1>:null}
@@ -86,8 +98,8 @@ return (
     <option value={Categories.TO_DO}>To Do</option>
     <option value={Categories.DOING}>Doing</option>
     <option value={Categories.DONE}>Done</option>
-    {NewCategory.map((category) => (
-      <option key={category.Cid} value={category.Ctext}>{category.Ctext}</option>
+    {newcategory.map((category,i) => (
+      <option key={i} value={category}>{category}</option>
     ))}
 </select>
 

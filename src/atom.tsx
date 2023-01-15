@@ -7,17 +7,40 @@ const { persistAtom } = recoilPersist({
 },
 )
 
+//const TODO_KEY = 'toDos';
+//const CATEGORIES_KEY = 'additional_categories';
+
 //type categories = "TO_DO" | "DOING" | "DONE";
 
+export enum Categories { 
+    // 코드 전체에서 "TO_DO","DOING","DONE" 을 사용하고 싶다
+    //"TO_DO","DOING","DONE" 과 같은 string을 쓰면서 실수를 줄이기 위함
+     //   "TO_DO","DOING","DONE" 
+    // "TO_DO","DOING","DONE" 사실 숫자이다 
+    // 그래서 <button name={Categories.TO_DO}></button> 는 에러 
+    // name에 숫자가 들어갔기 때문
+    "TO_DO"="TO_DO",
+    "DOING"="DOING",
+    "DONE"="DONE" 
+    }
 
-export interface ICategory {
+    export interface IToDo{
+        text:string;
+        id: number;
+        category:Categories
+        }
+        //let output = localStorage.getItem("TODOS");
+        //let localData = JSON.parse(output as any);
+//-----------------------------------------------------------------------------
+
+/*export interface ICategory {
 Ctext:string,
 Cid: number
-}
+}*/
 
-export const NewCategoryState = atom<ICategory[]>({
+export const NewCategoryState = atom<string[]>({
     key: "NewCategoryState",
-    default: [],
+    default:[], //JSON.parse(localStorage.getItem(CATEGORIES_KEY) || '[]'),
     effects_UNSTABLE: [persistAtom]
 })
 
@@ -32,29 +55,12 @@ export const CategorySelector = selector({
 
 //-----------------------------------------------------------------------------
 
-export enum Categories { 
-    // 코드 전체에서 "TO_DO","DOING","DONE" 을 사용하고 싶다
-    //"TO_DO","DOING","DONE" 과 같은 string을 쓰면서 실수를 줄이기 위함
-     //   "TO_DO","DOING","DONE" 
-    // "TO_DO","DOING","DONE" 사실 숫자이다 
-    // 그래서 <button name={Categories.TO_DO}></button> 는 에러 
-    // name에 숫자가 들어갔기 때문
-    "TO_DO"="TO_DO",
-    "DOING"="DOING",
-    "DONE"="DONE" 
-    }
-export interface IToDo{
-    text:string;
-    id: number;
-    category:Categories
-    }
-    //let output = localStorage.getItem("TODOS");
-    //let localData = JSON.parse(output as any);
+
 
 export const toDostate = atom<IToDo[]>({ // atom의 type이 ToDO의 배열임을 알려줌
     key:"toDo",
    // default:localData,
-   default: [],
+   default:[], //JSON.parse(localStorage.getItem(TODO_KEY) || '[]'),
     effects_UNSTABLE: [persistAtom]
     })
 

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {useRecoilValue, useSetRecoilState} from "recoil";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 import {categoryState,NewCategoryState, toDostate, Categories} from "../atom";
 
 interface IForm{
@@ -32,11 +31,8 @@ const handleValid = ({toDo}:IForm) => {
 
         setValue("toDo", "");
         setToDos((oldToDos) => 
-        {
- return [...oldToDos,{text:toDo, category, id: Date.now()}]
- 
-
-        });
+  [...oldToDos,{text:toDo, category, id: Date.now()}]
+        );
 
         }
  // ----------------------------------------------------------------
