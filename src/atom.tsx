@@ -12,12 +12,11 @@ const { persistAtom } = recoilPersist({
 
 export interface ICategory {
 Ctext:string,
-Cid: number,
-Ccategory: string[],
+Cid: number
 }
 
-export const CategoryState = atom<ICategory[]>({
-    key: "CategoryState",
+export const NewCategoryState = atom<ICategory[]>({
+    key: "NewCategoryState",
     default: [],
     effects_UNSTABLE: [persistAtom]
 })
@@ -25,7 +24,7 @@ export const CategoryState = atom<ICategory[]>({
 export const CategorySelector = selector({
     key: "CategorySelector",
     get: ({get}) => {
-    const Category = get(CategoryState);
+    const Category = get(NewCategoryState);
     return Category
     }
     }

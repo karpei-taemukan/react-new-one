@@ -2,24 +2,22 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
-import {categoryState,CategoryState, toDostate, Categories} from "../atom";
+import {categoryState,NewCategoryState, toDostate, Categories} from "../atom";
 
 interface IForm{
-    toDo:string;
+    toDo:string,
     }
-interface ICategory{
-    category: string;
-}
+
 function CreateToDo(){
 const {register,handleSubmit, setValue} = useForm<IForm>();
-const CategoryForm = useForm<ICategory>();
 
 const setToDos = useSetRecoilState(toDostate);
 
 const category = useRecoilValue(categoryState);
 
-const setCategory = useSetRecoilState(CategoryState);
-const Category = useRecoilValue(CategoryState);
+// ----------------------------------------------------------------
+
+
 //console.log(Category);
 /*const random = Date.now();
 useEffect(() => {
@@ -41,21 +39,9 @@ const handleValid = ({toDo}:IForm) => {
         });
 
         }
-
-        const onValid = ({category}:ICategory) => {
-          //  console.log(category);
-          CategoryForm.setValue("category", "");
-            setCategory((oldCategory) => {
-        
-               return {
-                    ...oldCategory,
-                    [category]: [{Ctext: category,Cid: Date.now(), Ccategory:[category]}]
-                };
+ // ----------------------------------------------------------------
 
      
-            })
-            }
-
     return (
     <>
     <form onSubmit={handleSubmit(handleValid)}>
@@ -63,11 +49,6 @@ const handleValid = ({toDo}:IForm) => {
     <button>Add</button>
     </form>
     <br />
-    <form onSubmit={CategoryForm.handleSubmit(onValid)}>
-    <input {...CategoryForm.register("category")} placeholder="Write a category List" />  
-    <button>Add</button>
-    </form>
-
     </>)
 }
 
