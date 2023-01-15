@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import {useRecoilValue, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import {categoryState,NewCategoryState, toDostate, Categories} from "../atom";
 
 interface IForm{
@@ -8,16 +8,16 @@ interface IForm{
 
 function CreateCategory(){
     const CategoryForm = useForm<IForm>();
-    const setCategory = useSetRecoilState(NewCategoryState);
-
+    const setCategory = useSetRecoilState(categoryState);
+   const [newCategory, setNewCategory] = useRecoilState(NewCategoryState)
     const onValid = ({category}:IForm) => {
-        setCategory((oldCategory) => 
-        [...oldCategory,category])
+        setCategory(category as any);
+        setNewCategory((oldCategory) => [...oldCategory,category])
           CategoryForm.setValue("category", "");
           }
 return (
     <form onSubmit={CategoryForm.handleSubmit(onValid)}>
-    <input {...CategoryForm.register("category")} placeholder="Write a category List" />  
+    <input {...CategoryForm.register("category")} placeholder="Write a category List" type="text" />  
     <button>Add</button>
     </form>
 )

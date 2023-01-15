@@ -7,8 +7,8 @@ const { persistAtom } = recoilPersist({
 },
 )
 
-//const TODO_KEY = 'toDos';
-//const CATEGORIES_KEY = 'additional_categories';
+const TODO_KEY = 'toDos';
+const CATEGORIES_KEY = 'additional_categories';
 
 //type categories = "TO_DO" | "DOING" | "DONE";
 
@@ -40,8 +40,8 @@ Cid: number
 
 export const NewCategoryState = atom<string[]>({
     key: "NewCategoryState",
-    default:[], //JSON.parse(localStorage.getItem(CATEGORIES_KEY) || '[]'),
-    effects_UNSTABLE: [persistAtom]
+    default:JSON.parse(localStorage.getItem(CATEGORIES_KEY) || '[]'),
+  //  effects_UNSTABLE: [persistAtom]
 })
 
 export const CategorySelector = selector({
@@ -60,8 +60,8 @@ export const CategorySelector = selector({
 export const toDostate = atom<IToDo[]>({ // atom의 type이 ToDO의 배열임을 알려줌
     key:"toDo",
    // default:localData,
-   default:[], //JSON.parse(localStorage.getItem(TODO_KEY) || '[]'),
-    effects_UNSTABLE: [persistAtom]
+   default: JSON.parse(localStorage.getItem(TODO_KEY) || '[]'),
+   // effects_UNSTABLE: [persistAtom]
     })
 
     // atom은 꼭 props를 저장하는 데가 아닌 변경할 data 저장 장소이다 

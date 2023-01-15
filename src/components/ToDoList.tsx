@@ -7,8 +7,8 @@ import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import CreateCategory from "./CreateCategory";
 
-//const TODO_KEY = 'toDos';
-//const CATEGORIES_KEY = 'additional_categories';
+const TODO_KEY = 'toDos';
+const CATEGORIES_KEY = 'additional_categories';
 
 function ToDoList(){
     // const toDos = useRecoilValue(toDostate);
@@ -20,7 +20,7 @@ function ToDoList(){
   //  const toDos= useRecoilValue(toDostate);
 //  const [toDo, doing, done] = useRecoilValue(toDoSelector);
 const toDos = useRecoilValue(toDoSelector);
-//const [rawToDos, setRawToDos] = useRecoilState(toDostate);
+const [rawToDos, setRawToDos] = useRecoilState(toDostate);
 const Category = useRecoilValue(CategorySelector);
 //console.log(Object.keys(Category))
 
@@ -32,7 +32,10 @@ const [newcategory, setnewcategory] = useRecoilState(NewCategoryState);
 const NewCategory = useRecoilValue(NewCategoryState);
 //console.log(NewCategory)
 //console.log(newcategory);
-
+//console.log(Object.keys(Category))
+/*for(let i=0; i<Object.keys(Category).length; i++){
+console.log(Object.keys(Category)[i])
+}*/
 const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
 //console.log(event.currentTarget.value);
 const {currentTarget:{value}} = event;
@@ -50,8 +53,18 @@ setCategory(value as any);
   }*/
 
   const onDelete = (event:React.MouseEvent<HTMLButtonElement>)=>{
+    setRawToDos([]);
 setnewcategory([]);
    }
+
+   useEffect(() => {
+    localStorage.setItem(TODO_KEY, JSON.stringify(rawToDos));
+  }, [rawToDos]);
+  
+  useEffect(() => {
+    localStorage.setItem(CATEGORIES_KEY, JSON.stringify(newcategory));
+  }, [newcategory]);
+  
 
 // ------------------------------------------------------------------------------------
 
@@ -75,14 +88,6 @@ const onHoursChange = (event:React.FormEvent<HTMLInputElement>) => {
   setHours(+event.currentTarget.value);
 }
 
-/*useEffect(() => {
-  localStorage.setItem(TODO_KEY, JSON.stringify(rawToDos));
-}, [rawToDos]);
-
-useEffect(() => {
-  localStorage.setItem(CATEGORIES_KEY, JSON.stringify(newcategory));
-}, [newcategory]);
-*/
 return (
     <>
     {/*{category === "TO_DO" ? <h1>TO_DO</h1>:null}
@@ -99,6 +104,12 @@ return (
       <option key={i} value={category}>{category}</option>
     ))}
 </select>
+
+{/*<select onInput={handleInput}>
+    {Object.keys(Category).map((category, index) => (
+        <option key={index} value={category}>{category}</option>
+        ))}
+    </select>*/}
 
  
         <button onClick={onDelete}>Delete categories</button>
